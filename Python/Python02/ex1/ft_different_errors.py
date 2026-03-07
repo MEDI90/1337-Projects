@@ -18,7 +18,7 @@ def garden_operations() -> None:
         print("Caught FileNotFoundError: No such file 'missing.txt'")
     print("\nTesting KeyError...")
     try:
-        k = "missing_plant"
+        k = "missing\\_plant"
         garden = {"tree": 5}
         garden[k]
     except KeyError:

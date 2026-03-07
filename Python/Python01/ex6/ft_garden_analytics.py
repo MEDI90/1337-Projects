@@ -20,20 +20,12 @@ class FloweringPlant(Plant):
     def bloom(self) -> str:
         return "(blooming)"
 
-    def __str__(self) -> str:
-        return (f"- {self.name}: {self.height}cm, "
-                f"{self.color} flowers {self.bloom()}")
-
 
 class PrizeFlower(FloweringPlant):
     def __init__(self, name: str, height: int,
                  age: int, color: str, prize_points: int) -> None:
         super().__init__(name, height, age, color)
         self.prize_points = prize_points
-
-    def __str__(self) -> str:
-        return (f"- {self.name}: {self.height}cm, {self.color} "
-                f"flowers {self.bloom()}, Prize points: {self.prize_points}")
 
 
 class Garden:
@@ -72,7 +64,6 @@ class GardenManager:
             regular = 0
             flowering = 0
             prize = 0
-            total_points = 0
             current_height = 0
             start_height = garden.initial_heights
             for plant in garden.plants:
@@ -85,7 +76,6 @@ class GardenManager:
                     flowering += 1
                 elif name == "PrizeFlower":
                     prize += 1
-                    total_points += plant.prize_points
 
             total_growth = current_height - start_height
 
@@ -118,13 +108,13 @@ if __name__ == "__main__":
         Garden("Bob")
     ]
 
-    oak = Plant("Oak Tree", 100, 20)
-    rose = FloweringPlant("Rose", 25, 5, "red")
-    sunflower = PrizeFlower("Sunflower", 50, 5, "yellow", 10)
-    GardenManager.add_plant(garden_managers[0], oak)
-    GardenManager.add_plant(garden_managers[0], rose)
-    GardenManager.add_plant(garden_managers[0], sunflower)
-
+    plants = [
+    Plant("Oak Tree", 100, 20),
+    FloweringPlant("Rose", 25, 5, "red"),
+    PrizeFlower("Sunflower", 50, 5, "yellow", 10)
+    ]
+    for plant in plants:
+        GardenManager.add_plant(garden_managers[0], plant)
     GardenManager.grow_all(garden_managers[0])
 
     print(f"\n=== {garden_managers[0].name}'s Garden Report ===")
@@ -141,6 +131,6 @@ if __name__ == "__main__":
 
     alice_score = GardenManager.GardenStats.calculate_score(garden_managers[0])
     bob_score = GardenManager.GardenStats.calculate_score(garden_managers[1])
-    print(f"Garden scores - Alice: {alice_score}, Bob: {bob_score}")
+    print(f"Garden scores - {garden_managers[0].name}: {alice_score}, {garden_managers[1].name}: {bob_score}")
 
     GardenManager.create_garden_network([garden_managers[0], garden_managers[1]])
