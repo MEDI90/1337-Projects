@@ -37,4 +37,7 @@ def test_custom_errors() -> None:
 
 
 if __name__ == "__main__":
-    test_custom_errors()
+    try:
+        test_custom_errors()
+    except Exception as e:
+        print(f"Error: {e}")

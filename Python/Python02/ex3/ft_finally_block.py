@@ -24,4 +24,7 @@ def test_watering_system() -> None:
 
 
 if __name__ == "__main__":
-    test_watering_system()
+    try:
+        test_watering_system()
+    except Exception as e:
+        print(f"Error: {e}")

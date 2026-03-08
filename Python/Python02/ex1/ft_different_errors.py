@@ -1,45 +1,52 @@
-def garden_operations(action: str) -> None:
-    if action == "value":
+def garden_operations() -> tuple:
+    def trigger_value() -> None:
         int("abs")
-    elif action == "zero":
+
+    def trigger_zero() -> None:
         1 / 0
-    elif action == "file":
+
+    def trigger_file() -> None:
         open("missing.txt", "r")
-    elif action == "key":
+
+    def trigger_key() -> None:
         garden = {"tree": 5}
         garden["missing_plant"]
+
+    return trigger_value, trigger_zero, trigger_file, trigger_key
 
 
 def test_error_types() -> None:
     print("=== Garden Error Types Demo ===")
 
+    val_err, zero_err, file_err, key_err = garden_operations()
+
     print("\nTesting ValueError...")
     try:
-        garden_operations("value")
+        val_err()
     except ValueError:
         print("Caught ValueError: invalid literal for int()")
 
     print("\nTesting ZeroDivisionError...")
     try:
-        garden_operations("zero")
+        zero_err()
     except ZeroDivisionError:
         print("Caught ZeroDivisionError: division by zero")
 
     print("\nTesting FileNotFoundError...")
     try:
-        garden_operations("file")
+        file_err()
     except FileNotFoundError:
         print("Caught FileNotFoundError: No such file 'missing.txt'")
 
     print("\nTesting KeyError...")
     try:
-        garden_operations("key")
+        key_err()
     except KeyError:
         print("Caught KeyError: 'missing_plant'")
 
     print("\nTesting multiple errors together...")
     try:
-        garden_operations("value")
+        val_err()
     except (ValueError, ZeroDivisionError, KeyError, FileNotFoundError):
         print("Caught an error, but program continues!")
 
@@ -47,4 +54,7 @@ def test_error_types() -> None:
 
 
 if __name__ == "__main__":
-    test_error_types()
+    try:
+        test_error_types()
+    except Exception as e:
+        print(f"Error: {e}")
