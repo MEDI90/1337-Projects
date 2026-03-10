@@ -1,16 +1,16 @@
+import sys
 import math
-from typing import Tuple
 
 
-def calculate_distance(p1: Tuple[int, int, int],
-                       p2: Tuple[int, int, int]) -> float:
+def calculate_distance(p1: tuple[int, int, int],
+                       p2: tuple[int, int, int]) -> float:
     x1, y1, z1 = p1
     x2, y2, z2 = p2
     distance = math.sqrt((x2 - x1)**2 + (y2 - y1)**2 + (z2 - z1)**2)
     return distance
 
 
-def parse_coordinates(coord_string: str) -> Tuple[int, int, int]:
+def parse_coordinates(coord_string: str) -> tuple[int, int, int] | None:
     try:
         parts = coord_string.split(',')
 
@@ -24,6 +24,9 @@ def parse_coordinates(coord_string: str) -> Tuple[int, int, int]:
         print(f"Error parsing coordinates: {e}")
         print(f"Error details - Type: ValueError, Args: {e.args}")
         return None
+    except IndexError as e:
+        print(f"Error parsing coordinates: {e}")
+        return None
 
 
 def main() -> None:
@@ -31,28 +34,50 @@ def main() -> None:
 
     origin = (0, 0, 0)
 
-    pos1 = (10, 20, 5)
-    print(f"Position created: {pos1}")
-    dist1 = calculate_distance(origin, pos1)
-    print(f"Distance between {origin} and {pos1}: {dist1:.2f}\n")
+    args = sys.argv[1:]
 
-    valid_str = "3,4,0"
-    print(f'Parsing coordinates: "{valid_str}"')
-    parsed_pos = parse_coordinates(valid_str)
-    if parsed_pos:
-        print(f"Parsed position: {parsed_pos}")
-        dist2 = calculate_distance(origin, parsed_pos)
-        print(f"Distance between {origin} and {parsed_pos}: {dist2:.1f}\n")
+    if args:
+        is_first = True
+        for arg in args:
+            print(f'Parsing coordinates: "{arg}"')
+            parsed_pos = parse_coordinates(arg)
+            if parsed_pos:
+                print(f"Parsed position: {parsed_pos}")
+                dist = calculate_distance(origin, parsed_pos)
+                print(f"Distance between {origin} and {parsed_pos}: "
+                      f"{dist:.1f}\n")
 
-    invalid_str = "abc,def,ghi"
-    print(f'Parsing invalid coordinates: "{invalid_str}"')
-    parse_coordinates(invalid_str)
-    print()
+                if is_first:
+                    print("Unpacking demonstration:")
+                    x, y, z = parsed_pos
+                    print(f"Player at x={x}, y={y}, z={z}")
+                    print(f"Coordinates: X={x}, Y={y}, Z={z}\n")
+                    is_first = False
+            else:
+                print()
+    else:
+        pos1 = (10, 20, 5)
+        print(f"Position created: {pos1}")
+        dist1 = calculate_distance(origin, pos1)
+        print(f"Distance between {origin} and {pos1}: {dist1:.2f}\n")
 
-    print("Unpacking demonstration:")
-    x, y, z = parsed_pos
-    print(f"Player at x={x}, y={y}, z={z}")
-    print(f"Coordinates: X={x}, Y={y}, Z={z}")
+        valid_str = "3,4,0"
+        print(f'Parsing coordinates: "{valid_str}"')
+        parsed_pos = parse_coordinates(valid_str)
+        if parsed_pos:
+            print(f"Parsed position: {parsed_pos}")
+            dist2 = calculate_distance(origin, parsed_pos)
+            print(f"Distance between {origin} and {parsed_pos}: {dist2:.1f}\n")
+
+        invalid_str = "abc,def,ghi"
+        print(f'Parsing invalid coordinates: "{invalid_str}"')
+        parse_coordinates(invalid_str)
+        print()
+
+        print("Unpacking demonstration:")
+        x, y, z = parsed_pos
+        print(f"Player at x={x}, y={y}, z={z}")
+        print(f"Coordinates: X={x}, Y={y}, Z={z}")
 
 
 if __name__ == "__main__":

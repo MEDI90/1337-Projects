@@ -3,15 +3,28 @@ import sys
 if __name__ == "__main__":
     inventory = dict()
 
+    digits = {'0': 0, '1': 1, '2': 2, '3': 3, '4': 4,
+              '5': 5, '6': 6, '7': 7, '8': 8, '9': 9}
+
     for arg in sys.argv[1:]:
-        parts = arg.split(':')
+        parts = []
+        current_part = ""
+        for char in arg:
+            if char == ':':
+                parts += [current_part]
+                current_part = ""
+            else:
+                current_part += char
+        parts += [current_part]
+
         if len(parts) == 2:
             name = parts[0]
-            try:
-                qty = int(parts[1])
-                inventory[name] = inventory.get(name, 0) + qty
-            except ValueError:
-                pass
+
+            qty = 0
+            for char in parts[1]:
+                qty = (qty * 10) + digits.get(char, 0)
+
+            inventory[name] = inventory.get(name, 0) + qty
 
     print("=== Inventory System Analysis ===")
     total_items = 0

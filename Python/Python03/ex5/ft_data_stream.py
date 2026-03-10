@@ -1,8 +1,7 @@
-import typing
+from typing import Generator
 
 
-def generate_game_events(total: int) -> typing.Generator:
-    """Generates game events one by one without loading all into memory."""
+def generate_game_events(total: int) -> Generator:
     yield (1, "alice", 5, "killed monster")
     yield (2, "bob", 12, "found treasure")
     yield (3, "charlie", 8, "leveled up")
@@ -22,8 +21,7 @@ def generate_game_events(total: int) -> typing.Generator:
         yield (i, "npc", level, action)
 
 
-def fibonacci(limit: int) -> typing.Generator:
-    """Generates the Fibonacci sequence up to a limit."""
+def fibonacci(limit: int) -> Generator:
     a = 0
     b = 1
     for _ in range(limit):
@@ -33,8 +31,7 @@ def fibonacci(limit: int) -> typing.Generator:
         b = temp
 
 
-def primes(limit: int) -> typing.Generator:
-    """Generates prime numbers up to a limit."""
+def primes(limit: int) -> Generator:
     count = 0
     n = 2
     while count < limit:
